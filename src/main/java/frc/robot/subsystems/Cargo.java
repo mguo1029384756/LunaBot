@@ -8,25 +8,38 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.Victor;
 import frc.robot.RobotMap;
+import frc.robot.commands.ballRelease;
+import frc.robot.commands.ballIntakeShoot;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+
 /**
  * Add your docs here.
  */
 public class Cargo extends Subsystem {
-
-  private Victor cargoShooter;
-  private Victor cargoIntake;
+  private VictorSPX shooterMotor;
+  private VictorSPX intakeMotor;
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public Cargo() {
-    cargoShooter = new Victor(RobotMap.SHOOTER_VICTOR_PORT);
-    cargoIntake = new Victor(RobotMap.INTAKE_VICTOR_PORT);
+    shooterMotor.follow(intakeMotor);
+    shooterMotor = new VictorSPX(RobotMap.SHOOTER_VICTOR_PORT);
+    intakeMotor = new VictorSPX(RobotMap.INTAKE_VICTOR_PORT);
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ballIntakeShoot());
+    setDefaultCommand(new ballRelease());
+  }
+  public void forward() {
+    intakeMotor.set(ControlMode.PercentOutput, 1);
+  }
+
+  public void reverse() {
+    intakeMotor.set(ControlMode.PercentOutput, -1);
   }
 }

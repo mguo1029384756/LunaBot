@@ -12,17 +12,20 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Button;
 import frc.robot.commands.HatchRetract;
 import frc.robot.commands.HatchExtend;
+import frc.robot.commands.ballRelease;
+import frc.robot.commands.ballIntakeShoot;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
   public Joystick driverController = new Joystick(RobotMap.CONTROLLER_PORT);
-  public Button intakeButton = new JoystickButton(driverController, 3);
-  public Button shooterButton = new JoystickButton(driverController, 4);
+  public Button intakeShootButton = new JoystickButton(driverController, 3);
+  public Button releaseBallButton = new JoystickButton(driverController, 4);
   public Button hatchExtendButton = new JoystickButton(driverController, 5);
   public Button hatchRetractButton = new JoystickButton(driverController, 6);
- 
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -51,7 +54,9 @@ public class OI {
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
   public OI() {
-    hatchRetractButton.whenPressed(new HatchRetract());
-    hatchExtendButton.whenPressed(new HatchExtend());
+    hatchRetractButton.whileHeld(new HatchRetract());
+    hatchExtendButton.whileHeld(new HatchExtend());
+    intakeShootButton.whileHeld(new ballIntakeShoot());
+    releaseBallButton.whileHeld(new ballRelease());
   }
 }
